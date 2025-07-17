@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // output: "standalone", // Amplifyでは不要
+  output: "export", // 静的サイトとしてビルド
   images: {
     unoptimized: true,
   },
