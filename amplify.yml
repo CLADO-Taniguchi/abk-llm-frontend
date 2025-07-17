@@ -4,17 +4,22 @@ frontend:
     preBuild:
       commands:
         - nvm use 18
+        - npm --version
+        - node --version
         - npm ci
     build:
       commands:
         - npm run build
+        - cp -r public .next/standalone/public || true
+        - cp -r .next/static .next/standalone/.next/static || true
   artifacts:
-    baseDirectory: .next
+    baseDirectory: .next/standalone
     files:
       - '**/*'
   cache:
     paths:
       - node_modules/**/*
+      - .next/cache/**/*
   customHeaders:
     - pattern: '**/*'
       headers:
