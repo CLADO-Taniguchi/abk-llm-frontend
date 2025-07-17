@@ -298,13 +298,8 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <img 
-                  src="https://static.readdy.ai/image/60a7852ea0ff95e4321c1f6f322cd6f8/33f7c24daa878e3690d3e52fceb1885a.png" 
-                  alt="LUMINE Logo" 
-                  className="h-10 w-auto"
-                />
                 <h1 className="text-2xl font-bold text-blue-900" style={{ fontFamily: 'var(--font-playfair-display)' }}>
-                  Data Intelligence Platform
+                  ABK 不動産データ分析システム
                 </h1>
               </div>
             </div>
