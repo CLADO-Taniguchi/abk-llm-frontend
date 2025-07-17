@@ -155,12 +155,18 @@ export default function Home() {
       
       // デバッグ用：レスポンスの内容をコンソールに出力
       console.log('n8n Response:', data);
+      console.log('Response type:', typeof data);
+      console.log('Response keys:', Object.keys(data));
       
       // より詳細なレスポンスを表示
       let aiContent = '';
       
+      // レスポンスが空の場合
+      if (!data || Object.keys(data).length === 0) {
+        aiContent = '⚠️ サーバーからの応答が空です。\n\nn8nワークフローの設定を確認してください：\n• Webhook URLが正しいか\n• ワークフローがアクティブか\n• レスポンスノードが正しく設定されているか';
+      }
       // エラーがある場合
-      if (data.error) {
+      else if (data.error) {
         aiContent = `⚠️ エラーが発生しました: ${data.error}`;
         if (data.error_details) {
           aiContent += `\n\n詳細: ${data.error_details}`;
@@ -175,6 +181,23 @@ export default function Home() {
         if (data.webhook_query) {
           aiContent = `「${data.webhook_query}」についてデータを分析しました。`;
         }
+      }
+      
+      // response_typeがvisualizationの場合（グラフ表示）
+      if (data.response_type === 'visualization' && data.visualization_html) {
+        aiContent = data.claude_response || 'グラフを生成しました。';
+        // HTMLを直接表示する場合はフロントエンドで別途処理が必要
+        aiContent += '\n\n📊 ビジュアライゼーションが生成されました。';
+      }
+      
+      // claude_responseがある場合は優先的に表示
+      if (data.claude_response && !aiContent) {
+        aiContent = data.claude_response;
+      }
+      
+      // n8nからの直接的なメッセージがある場合
+      if (data.message && !aiContent) {
+        aiContent = data.message;
       }
       
       // SQLクエリが生成された場合、追加情報を表示
@@ -229,6 +252,11 @@ export default function Home() {
       if (data.execution_time) {
         const executionDate = new Date(data.execution_time);
         aiContent += `\n\n実行時刻: ${executionDate.toLocaleString('ja-JP')}`;
+      }
+      
+      // aiContentが空の場合、デフォルトメッセージを設定
+      if (!aiContent) {
+        aiContent = '応答を処理中にエラーが発生しました。\n\nデバッグ情報:\n' + JSON.stringify(data, null, 2);
       }
       
       const aiMessage: Message = {
