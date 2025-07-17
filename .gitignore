@@ -174,7 +174,7 @@ yarn-error.log*
 # Build outputs
 dist/
 build/
-public/
+# public/  # コメントアウト - 画像ファイルをコミットするため
 
 # IDE and Editor files
 .vscode/
