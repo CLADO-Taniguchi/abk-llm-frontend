@@ -3,9 +3,9 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm use 18
-        - npm --version
-        - node --version
+        - node --version  # 現在のバージョンを確認
+        - nvm use 18      # Node.js 18を使用
+        - node --version  # 変更後のバージョンを確認
         - npm ci
     build:
       commands:
