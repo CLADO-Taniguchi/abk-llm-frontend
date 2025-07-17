@@ -239,7 +239,7 @@ export default function Home() {
       };
       
       setMessages(prev => [...prev, aiMessage]);
-          } catch (error) {
+    } catch (error) {
       console.error('API Error:', error);
       let errorContent = '申し訳ございません。エラーが発生しました。';
       
@@ -251,6 +251,7 @@ export default function Home() {
         } else {
           errorContent = `⚠️ エラーが発生しました\n\n${error.message}`;
         }
+      }
        
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
