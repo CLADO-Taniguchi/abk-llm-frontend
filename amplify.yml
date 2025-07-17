@@ -20,6 +20,10 @@ frontend:
         - npm run build
         - echo "=== Build completed ==="
         - ls -la out/
+        - echo "=== Ensuring static export ==="
+        - rm -rf .next/standalone
+        - rm -f .next/required-server-files.json
+        - rm -rf .next/server
   artifacts:
     baseDirectory: out
     files:
