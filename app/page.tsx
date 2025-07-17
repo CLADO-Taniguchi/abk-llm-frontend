@@ -61,7 +61,7 @@ export default function Home() {
 
       // n8nワークフローAPI呼び出し
       // 直接n8nにアクセス（CORS対応が必要）
-      const n8nUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || 'https://clado.app.n8n.cloud/webhook-test/abk-ask';
+      const n8nUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || 'https://clado.app.n8n.cloud/webhook/abk-ask';
       const timeout = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '30000');
       
       // タイムアウト付きfetch
@@ -251,8 +251,7 @@ export default function Home() {
         } else {
           errorContent = `⚠️ エラーが発生しました\n\n${error.message}`;
         }
-      }
-      
+       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
@@ -283,7 +282,7 @@ export default function Home() {
     <div 
       className="min-h-screen relative"
       style={{
-        backgroundImage: `url('https://readdy.ai/api/search-image?query=Luxury%20high-end%20fashion%20boutique%20interior%20with%20modern%20minimalist%20design%2C%20premium%20clothing%20displays%2C%20elegant%20lighting%2C%20marble%20floors%2C%20sophisticated%20retail%20environment%2C%20clean%20white%20and%20blue%20color%20scheme%2C%20professional%20commercial%20space%20with%20designer%20garments%20on%20display%20racks%2C%20contemporary%20luxury%20shopping%20atmosphere&width=1920&height=1080&seq=lumine-bg-001&orientation=landscape')`,
+        backgroundImage: `url('/images/takamatsu.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
@@ -298,8 +297,8 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <h1 className="text-2xl font-bold text-blue-900" style={{ fontFamily: 'var(--font-playfair-display)' }}>
-                  ABK 不動産データ分析システム
+                                  <h1 className="text-2xl font-bold text-blue-900" style={{ fontFamily: 'var(--font-playfair-display)' }}>
+                  ABK あなぶき興産データ分析システム
                 </h1>
               </div>
             </div>
@@ -393,7 +392,7 @@ export default function Home() {
         <footer className="bg-white/95 backdrop-blur-sm border-t border-blue-200 py-4">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <p className="text-sm text-blue-600">
-              Powered by ABK Real Estate Data Analytics System
+              Powered by ABK あなぶき興産データ分析システム
             </p>
           </div>
         </footer>
