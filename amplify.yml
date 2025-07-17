@@ -3,13 +3,23 @@ frontend:
   phases:
     preBuild:
       commands:
-        - node --version  # 現在のバージョンを確認
-        - nvm use 18      # Node.js 18を使用
-        - node --version  # 変更後のバージョンを確認
+        - echo "=== Build Environment Info ==="
+        - echo "Current directory:" && pwd
+        - echo "Node version before nvm:" && node --version
+        - echo "NPM version before nvm:" && npm --version
+        - echo "Available Node versions:" && nvm list
+        - nvm install 18
+        - nvm use 18
+        - echo "Node version after nvm:" && node --version
+        - echo "NPM version after nvm:" && npm --version
+        - echo "=== Installing dependencies ==="
         - npm ci
     build:
       commands:
+        - echo "=== Building application ==="
         - npm run build
+        - echo "=== Build completed ==="
+        - ls -la out/
   artifacts:
     baseDirectory: out
     files:
