@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone", // Amplify用にstandaloneモードに変更
+  // output: "standalone", // Amplifyでは不要
   images: {
     unoptimized: true,
   },
