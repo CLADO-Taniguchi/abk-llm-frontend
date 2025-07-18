@@ -175,10 +175,15 @@ export default function Home() {
         aiContent = '⚠️ クエリの実行に失敗しました。';
       } else if (data.success === true) {
         // 成功時の処理
-        aiContent = 'データ分析が完了しました。';
+        // responseフィールドがある場合は優先的に使用
+        if (data.response) {
+          aiContent = data.response;
+        } else {
+          aiContent = 'データ分析が完了しました。';
+        }
         
-        // 元のクエリを表示
-        if (data.webhook_query) {
+        // 元のクエリを表示（responseがない場合のフォールバック）
+        if (!data.response && data.webhook_query) {
           aiContent = `「${data.webhook_query}」についてデータを分析しました。`;
         }
       }
@@ -190,9 +195,14 @@ export default function Home() {
         aiContent += '\n\n📊 ビジュアライゼーションが生成されました。';
       }
       
-      // claude_responseがある場合は優先的に表示
-      if (data.claude_response && !aiContent) {
+      // claude_responseがある場合は優先的に表示（廃止予定）
+      if (data.claude_response && !data.response) {
         aiContent = data.claude_response;
+      }
+      
+      // responseフィールドが最優先（n8nで整形済み）
+      if (data.response) {
+        aiContent = data.response;
       }
       
       // n8nからの直接的なメッセージがある場合
@@ -200,16 +210,13 @@ export default function Home() {
         aiContent = data.message;
       }
       
-      // SQLクエリが生成された場合、追加情報を表示
-      if (data.claude_sql) {
-        aiContent += `\n\n実行したクエリ:\n\`\`\`sql\n${data.claude_sql}\n\`\`\``;
-      }
-      
-      // 結果データがある場合、簡潔に表示
-      if (data.redshift_results) {
+      // 結果データがある場合は、必要に応じて詳細を表示
+      // ただし、Claudeが既に結果を自然な形で説明している場合は追加表示しない
+      if (data.redshift_results && data.request_type === 'visualization') {
+        // ビジュアライゼーションの場合のみ、データの詳細を表示
         const results = data.redshift_results;
         if (Array.isArray(results) && results.length > 0) {
-          aiContent += `\n\n📊 結果: ${results.length}件のデータを取得しました。`;
+          aiContent += `\n\n📊 詳細データ (${results.length}件)`;
           
           // テーブル形式で表示（最初の5件）
           const displayResults = results.slice(0, 5);
@@ -237,14 +244,6 @@ export default function Home() {
               aiContent += `\n... 他 ${results.length - 5} 件のデータ`;
             }
           }
-        } else if (Array.isArray(results) && results.length === 0) {
-          aiContent += '\n\n📭 該当するデータが見つかりませんでした。';
-        } else if (typeof results === 'object' && Object.keys(results).length > 0) {
-          // オブジェクトの場合、整形して表示
-          aiContent += '\n\n📊 結果:\n';
-          Object.entries(results).forEach(([key, value]) => {
-            aiContent += `• ${key}: ${value}\n`;
-          });
         }
       }
       
